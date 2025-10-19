@@ -21,9 +21,7 @@ namespace LibARMP.IO
         /// <param name="stream">The destination <see cref="Stream"/>.</param>
         private static void WriteARMP(ARMP armp, Stream stream)
         {
-            bool isOldEngine = false;
-            if (armp.FormatVersion == Version.OldEngine || armp.FormatVersion == Version.OldEngineIshin)
-                isOldEngine = true;
+            bool isOldEngine = armp.FormatVersion == Version.OldEngine || armp.FormatVersion == Version.OldEngineIshin;
 
             Encoding writerEncoding = Encoding.UTF8;
             if (isOldEngine)
@@ -430,8 +428,24 @@ namespace LibARMP.IO
 
             ///// Table ID and Storage Mode /////
             writer.BaseStream.Seek(baseOffset + 0x20);
-            writer.WriteInt24(table.TableInfo.TableID);
-            writer.Write((byte)table.TableInfo.StorageMode);
+            if (table.TableInfo.FormatVersion == Version.DragonEngineV2)
+            {
+                writer.WriteInt24(table.TableInfo.TableID);
+                byte tableFlags = 0;
+                if (table.TableInfo.StorageMode == StorageMode.Structured) tableFlags |= 1;
+                if (table.TableInfo.UnknownFlag1) tableFlags |= 2;
+                if (table.TableInfo.UnknownFlag2) tableFlags |= 4;
+                if (table.TableInfo.UnknownFlag3) tableFlags |= 8;
+                if (table.TableInfo.UnknownFlag4) tableFlags |= 16;
+                if (table.TableInfo.DoNotUseRaw) tableFlags |= 32;
+                if (table.TableInfo.MembersWellFormatted) tableFlags |= 64;
+                if (table.TableInfo.IsProcessedForMemory) tableFlags |= 128;
+                writer.Write(tableFlags);
+            }
+            else
+            {
+                writer.Write(0u);
+            }
             writer.BaseStream.PopPosition();
 
 
@@ -594,6 +608,22 @@ namespace LibARMP.IO
                 // Update the main table pointer at 0x48
                 writer.WriteAtPosition(ptr, baseOffset + 0x48);
                 writer.WritePadding(0, 4); // True for most files
+            }
+            #endregion
+
+
+            ///// Column Metadata (V1) /////
+            #region ColumnMetadata(V1)
+
+            if (table.TableInfo.FormatVersion == Version.DragonEngineV1 && table.TableInfo.HasColumnMetadata)
+            {
+                ptr = (int)writer.BaseStream.Position;
+                foreach (ArmpTableColumn column in table.Columns)
+                {
+                    writer.Write(column.ColumnMetadata);
+                }
+                // Update the main table pointer at 0x20
+                writer.WriteAtPosition(ptr, baseOffset + 0x20);
             }
             #endregion
 
@@ -1008,8 +1038,8 @@ namespace LibARMP.IO
             if (table.TableInfo.FormatVersion == Version.DragonEngineV2) writer.WritePadding(0, 0x10);
 
 
-            ///// Entry Info Flags (v1 only) /////
-            #region EntryInfoFlags(v1)
+            ///// Entry Info Flags (V1) /////
+            #region EntryInfoFlags(V1)
 
             if (table.TableInfo.HasExtraFieldInfo && table.TableInfo.FormatVersion == Version.DragonEngineV1)
             {
@@ -1032,7 +1062,7 @@ namespace LibARMP.IO
 
 
             ///// Member Specification (V2) /////
-            #region MemberInfo
+            #region MemberInfo(V2)
 
             if (table.TableInfo.FormatVersion == Version.DragonEngineV2 && table.TableInfo.HasMemberInfo)
             {
@@ -1046,7 +1076,7 @@ namespace LibARMP.IO
 
 
             ///// Array Specifications (V2) /////
-            #region ArrayInfo
+            #region ArrayInfo(V2)
 
             if (table.TableInfo.FormatVersion == Version.DragonEngineV2 && table.TableInfo.HasExtraFieldInfo)
             {

@@ -64,7 +64,7 @@ namespace LibARMP
         /// <summary>
         /// Gets or sets the column metadata.
         /// </summary>
-        /// <remarks><para><b>OLD ENGINE ONLY</b></para></remarks>
+        /// <remarks><para><b>OLD ENGINE AND DRAGON ENGINE V1 ONLY</b></para></remarks>
         public int ColumnMetadata { get; set; }
 
         /// <summary>
