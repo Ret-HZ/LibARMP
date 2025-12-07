@@ -189,27 +189,48 @@ namespace LibARMP
         /// <summary>
         /// Gets the value for the specified column.
         /// </summary>
+        /// <param name="column">The <see cref="ArmpTableColumn"/>.</param>
+        public object GetValueFromColumn (ArmpTableColumn column)
+        {
+            if (Data.ContainsKey(column.Name))
+            {
+                object data = Data[column.Name];
+                // Convert to column type if the data is stored as member type for v2 structured
+                if (ParentTable.TableInfo.FormatVersion == Version.DragonEngineV2 && ParentTable.TableInfo.HasMemberInfo)
+                {
+                    if (column.Type.CSType != column.MemberInfo.Type.CSType)
+                    {
+                        data = Convert.ChangeType(data, column.Type.CSType);
+                    }
+                }
+                return data;
+            }
+            else // Check if the column doesn't exist or has no data
+            {
+                try
+                {
+                    ParentTable.GetColumn(column.Name);
+                }
+                catch (ColumnNotFoundException ex)
+                {
+                    throw ex;
+                }
+
+                throw new ColumnNoDataException(column.Name);
+            }
+        }
+
+
+        /// <summary>
+        /// Gets the value for the specified column.
+        /// </summary>
         /// <param name="columnName">The column name.</param>
         /// <exception cref="ColumnNotFoundException">The column name doesn't match any columns in the table.</exception>
         /// <exception cref="ColumnNoDataException">The column has no data.</exception>
         public object GetValueFromColumn (string columnName)
         {
-            if (Data.ContainsKey(columnName))
-            {
-                return Data[columnName];
-            }
-            else //Check if the column doesn't exist or has no data
-            {
-                try
-                {
-                    ParentTable.GetColumn(columnName);
-                } catch (ColumnNotFoundException ex)
-                {
-                    throw ex;
-                }
-
-                throw new ColumnNoDataException(columnName);
-            }
+            ArmpTableColumn column = ParentTable.GetColumn(columnName);
+            return GetValueFromColumn(column);
         }
 
 
@@ -221,72 +242,8 @@ namespace LibARMP
         /// <exception cref="ColumnNoDataException">The column has no data.</exception>
         public object GetValueFromColumn (uint columnID)
         {
-            List<string> keys = new List<string>(Data.Keys);
-
-            if (keys.Count > columnID)
-            {
-                try
-                {
-                    return Data[keys[(int)columnID]];
-                } catch (Exception)
-                {
-                    throw new ColumnNoDataException((int)columnID);
-                }
-            }
-            else
-            {
-                throw new ColumnNotFoundException(columnID);
-            }
-        }
-
-
-        /// <summary>
-        /// Gets the value for the specified column.
-        /// </summary>
-        /// <param name="column">The <see cref="ArmpTableColumn"/>.</param>
-        public object GetValueFromColumn (ArmpTableColumn column)
-        {
-            return GetValueFromColumn(column.Name);
-        }
-
-
-        /// <summary>
-        /// Gets the value for the specified column.
-        /// </summary>
-        /// <param name="columnName">The column name.</param>
-        /// <exception cref="InvalidTypeConversionException">The column type cannot be converted to the requested type.</exception>
-        public T GetValueFromColumn<T> (string columnName)
-        {
-            object result = GetValueFromColumn(columnName);
-            try
-            {
-                return (T)result;
-            }
-            catch
-            {
-                Type paramType = typeof(T);
-                throw new InvalidTypeConversionException(result.GetType(), paramType);
-            }
-        }
-
-
-        /// <summary>
-        /// Gets the value for the specified column.
-        /// </summary>
-        /// <param name="columnID">The column index.</param>
-        /// <exception cref="InvalidTypeConversionException">The column type cannot be converted to the requested type.</exception>
-        public T GetValueFromColumn<T> (uint columnID)
-        {
-            object result = GetValueFromColumn(columnID);
-            try
-            {
-                return (T)result;
-            }
-            catch
-            {
-                Type paramType = typeof(T);
-                throw new InvalidTypeConversionException(result.GetType(), paramType);
-            }
+            ArmpTableColumn column = ParentTable.GetColumn(columnID);
+            return GetValueFromColumn(column);
         }
 
 
@@ -298,15 +255,47 @@ namespace LibARMP
         public T GetValueFromColumn<T> (ArmpTableColumn column)
         {
             object result = GetValueFromColumn(column.Name);
+            
             try
             {
-                return (T)result;
+                // Attempt direct cast first
+                if (result is T t)
+                    return t;
+
+                // If direct cast is not possible, try ChangeType instead
+                Type targetType = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
+                object converted = Convert.ChangeType(result, targetType);
+                return (T)converted;
             }
             catch
             {
                 Type paramType = typeof(T);
                 throw new InvalidTypeConversionException(result.GetType(), paramType);
             }
+        }
+
+
+        /// <summary>
+        /// Gets the value for the specified column.
+        /// </summary>
+        /// <param name="columnName">The column name.</param>
+        /// <exception cref="InvalidTypeConversionException">The column type cannot be converted to the requested type.</exception>
+        public T GetValueFromColumn<T> (string columnName)
+        {
+            ArmpTableColumn column = ParentTable.GetColumn(columnName);
+            return GetValueFromColumn<T>(column);
+        }
+
+
+        /// <summary>
+        /// Gets the value for the specified column.
+        /// </summary>
+        /// <param name="columnID">The column index.</param>
+        /// <exception cref="InvalidTypeConversionException">The column type cannot be converted to the requested type.</exception>
+        public T GetValueFromColumn<T> (uint columnID)
+        {
+            ArmpTableColumn column = ParentTable.GetColumn(columnID);
+            return GetValueFromColumn<T>(column);
         }
 
 
@@ -324,12 +313,20 @@ namespace LibARMP
                 return;
             }
 
+            Type targetType = column.Type.CSType;
+
+            // If the stored types needs to be the member type
+            if (ParentTable.TableInfo.FormatVersion == Version.DragonEngineV2 && ParentTable.TableInfo.HasMemberInfo)
+            {
+                targetType = column.MemberInfo.Type.CSType;
+            }
+
             // Try to convert the value before throwing an exception if the types dont match
-            if (column.Type.CSType != value.GetType())
+            if (targetType != value.GetType())
             {
                 try
                 {
-                    value = Convert.ChangeType(value, column.Type.CSType);
+                    value = Convert.ChangeType(value, targetType);
                 }
                 catch
                 {
