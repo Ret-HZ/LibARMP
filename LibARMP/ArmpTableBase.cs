@@ -813,9 +813,9 @@ namespace LibARMP
                 ArmpTableColumn column = ColumnNameCache[columnName];
                 SetColumnValidity(column, isValid);
             }
-            catch (ColumnNoValidityException ex)
+            catch (ColumnNoValidityException)
             {
-                throw ex;
+                throw;
             }
             catch
             {

@@ -209,11 +209,11 @@ namespace LibARMP
             {
                 try
                 {
-                    ParentTable.GetColumn(column.Name);
+                    ParentTable.GetColumn(columnName);
                 }
-                catch (ColumnNotFoundException ex)
+                catch (ColumnNotFoundException)
                 {
-                    throw ex;
+                    throw;
                 }
 
                 throw new ColumnNoDataException(column.Name);
