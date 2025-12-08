@@ -881,7 +881,7 @@ namespace LibARMP.IO
             else if (type.CSType == typeof(string))
             {
                 // This should only run if we are loading the armp from memory
-                if (table.TableInfo.IsProcessedForMemory)
+                if (table.TableInfo.IsProcessedForMemory && table.TableInfo.StorageMode == StorageMode.Structured)
                 {
                     long ptrText = reader.ReadInt64();
                     ptrText = ptrText - table.TableInfo.BaseARMPMemoryAddress;
@@ -907,7 +907,7 @@ namespace LibARMP.IO
                 if (ptrTable == 0 || ptrTable == -1) return;
 
                 // This should only run if we are loading the armp from memory
-                if (table.TableInfo.IsProcessedForMemory)
+                if (table.TableInfo.IsProcessedForMemory && table.TableInfo.StorageMode == StorageMode.Structured)
                 {
                     ptrTable = ptrTable - table.TableInfo.BaseARMPMemoryAddress;
                 }
