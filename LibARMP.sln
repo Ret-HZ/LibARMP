@@ -5,7 +5,7 @@ VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibARMP", "LibARMP\LibARMP.csproj", "{C3F29DF3-1AA8-471A-BA7E-0DBB896FDC1F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "testApp", "testApp\testApp.csproj", "{911B43BB-C52A-4E50-832F-AE9ED092E803}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "armp-tool", "armp-tool\armp-tool.csproj", "{911B43BB-C52A-4E50-832F-AE9ED092E803}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibARMP.UnitTests", "LibARMP.UnitTests\LibARMP.UnitTests.csproj", "{AED55797-7340-456F-BD99-9BBDE1CBEB75}"
 EndProject

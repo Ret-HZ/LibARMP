@@ -211,13 +211,23 @@ namespace LibARMP
                 {
                     ParentTable.GetColumn(column.Name);
                 }
-                catch (ColumnNotFoundException ex)
+                catch (ColumnNotFoundException)
                 {
-                    throw ex;
+                    throw;
                 }
 
                 throw new ColumnNoDataException(column.Name);
             }
+        }
+
+        /// <summary>
+        /// Check if column has data.
+        /// </summary>
+        /// <param name="columnName">The column name.</param>
+        /// <returns>A <see cref="Boolean"/> indicating if the column has data.</returns>
+        public bool ColumnHasData (string columnName)
+        {
+            return Data.ContainsKey(columnName);
         }
 
 
