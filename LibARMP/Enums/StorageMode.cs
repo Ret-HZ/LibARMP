@@ -1,4 +1,4 @@
-﻿namespace LibARMP
+namespace LibARMP
 {
     /// <summary>
     /// How the data is stored.

@@ -1,4 +1,4 @@
-﻿using LibARMP.Exceptions;
+using LibARMP.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;

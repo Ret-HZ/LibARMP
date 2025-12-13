@@ -1,4 +1,4 @@
-﻿namespace LibARMP.UnitTests
+namespace LibARMP.UnitTests
 {
     public static class TestFiles
     {

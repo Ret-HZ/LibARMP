@@ -1,4 +1,4 @@
-﻿using LibARMP.Exceptions;
+using LibARMP.Exceptions;
 using LibARMP.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;

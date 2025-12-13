@@ -1,4 +1,4 @@
-﻿using LibARMP.Exceptions;
+using LibARMP.Exceptions;
 using System;
 using System.Collections.Generic;
 
@@ -209,7 +209,7 @@ namespace LibARMP
             {
                 try
                 {
-                    ParentTable.GetColumn(columnName);
+                    ParentTable.GetColumn(column.Name);
                 }
                 catch (ColumnNotFoundException)
                 {
@@ -218,6 +218,16 @@ namespace LibARMP
 
                 throw new ColumnNoDataException(column.Name);
             }
+        }
+
+        /// <summary>
+        /// Check if column has data.
+        /// </summary>
+        /// <param name="columnName">The column name.</param>
+        /// <returns>A <see cref="Boolean"/> indicating if the column has data.</returns>
+        public bool ColumnHasData (string columnName)
+        {
+            return Data.ContainsKey(columnName);
         }
 
 

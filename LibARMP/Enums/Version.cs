@@ -1,4 +1,4 @@
-﻿namespace LibARMP
+namespace LibARMP
 {
     /// <summary>
     /// Format version.
