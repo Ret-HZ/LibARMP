@@ -19,6 +19,8 @@ namespace LibARMP
             ColumnNameCache = new Dictionary<string, ArmpTableColumn>();
             Entries = new List<ArmpEntry>(expectedEntryCount);
             Columns = new List<ArmpTableColumn>(expectedColumnCount);
+            OrderedEntryIDs = new List<uint>();
+            OrderedColumnIDs = new List<int>();
         }
 
         /// <summary>
