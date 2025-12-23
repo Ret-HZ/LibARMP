@@ -648,7 +648,7 @@ namespace LibARMP
         /// <returns>The column index.</returns>
         /// <exception cref="ColumnNoIndexException">The table has no column indices.</exception>
         /// <exception cref="ColumnNotFoundException">The table has no column with the specified ID.</exception>
-        public int GetColumnIndex (uint id)
+        public uint GetColumnIndex (uint id)
         {
             if (!TableInfo.HasOrderedColumns) throw new ColumnNoIndexException();
 
@@ -670,7 +670,7 @@ namespace LibARMP
         /// <returns>The column index.</returns>
         /// <exception cref="ColumnNoIndexException">The table has no column indices.</exception>
         /// <exception cref="ColumnNotFoundException">The table has no column with the specified name.</exception>
-        public int GetColumnIndex (string columnName)
+        public uint GetColumnIndex (string columnName)
         {
             if (!TableInfo.HasOrderedColumns) throw new ColumnNoIndexException();
 
@@ -689,7 +689,7 @@ namespace LibARMP
         /// <param name="newIndex">The new index.</param>
         /// <exception cref="ColumnNoIndexException">The table has no column indices.</exception>
         /// <exception cref="ColumnNotFoundException">The table has no column with the specified ID.</exception>
-        public void SetColumnIndex (uint id, int newIndex)
+        public void SetColumnIndex (uint id, uint newIndex)
         {
             if (!TableInfo.HasOrderedColumns) throw new ColumnNoIndexException();
 
@@ -712,7 +712,7 @@ namespace LibARMP
         /// <param name="newIndex">The new index.</param>
         /// <exception cref="ColumnNoIndexException">The table has no column indices.</exception>
         /// <exception cref="ColumnNotFoundException">The table has no column with the specified name.</exception>
-        public void SetColumnIndex (string columnName, int newIndex)
+        public void SetColumnIndex (string columnName, uint newIndex)
         {
             if (!TableInfo.HasOrderedColumns) throw new ColumnNoIndexException();
 
@@ -867,7 +867,7 @@ namespace LibARMP
             uint id = (uint)Columns.Count;
             ArmpType armpType = DataTypes.GetArmpTypeByCSType(columnType);
             ArmpTableColumn column = new ArmpTableColumn(id, columnName, armpType);
-            column.Index = (int)id;
+            column.Index = id;
             if (TableInfo.FormatIsDragonEngine) OrderedColumnIDs.Add((int)id);
             column.IsValid = true;
             if (armpType.IsArray) column.Children = new List<ArmpTableColumn>();

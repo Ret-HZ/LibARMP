@@ -241,7 +241,7 @@ namespace LibARMP.IO
                 }
 
                 column.IsValid = columnValidity[c];
-                column.Index = table.TableInfo.HasOrderedColumns ? table.OrderedColumnIDs.IndexOf(c) : c;
+                column.Index = (uint)(table.TableInfo.HasOrderedColumns ? table.OrderedColumnIDs.IndexOf(c) : c);
                 if (table.TableInfo.HasGameVarColumns) column.GameVarID = gameVarColumnIDs[c];
                 if (table.TableInfo.HasColumnMetadata) column.ColumnMetadata = columnMetadata[c];
 

@@ -54,7 +54,7 @@ namespace LibARMP
         /// Gets or sets the column's display index, which may differ from its ID.
         /// </summary>
         /// <remarks><para>Can be null if unused.</para></remarks>
-        public int Index { get; set; }
+        public uint Index { get; set; }
 
         /// <summary>
         /// Gets or sets if the column is valid.
