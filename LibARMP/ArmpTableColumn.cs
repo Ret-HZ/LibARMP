@@ -9,9 +9,11 @@ namespace LibARMP
         /// <summary>
         /// Initializes a new instance of the <see cref="ArmpTableColumn"/> class.
         /// </summary>
+        /// <param name="parentTable">The table that contains this column.</param>
         /// <param name="id">The column ID.</param>
-        internal ArmpTableColumn(uint id)
+        internal ArmpTableColumn(ArmpTableBase parentTable, uint id)
         {
+            ParentTable = parentTable;
             ID = id;
             ColumnMetadata = -1;
             GameVarID = -1;
@@ -20,10 +22,11 @@ namespace LibARMP
         /// <summary>
         /// Initializes a new instance of the <see cref="ArmpTableColumn"/> class.
         /// </summary>
+        /// <param name="parentTable">The table that contains this column.</param>
         /// <param name="id">The column ID.</param>
         /// <param name="name">The column name.</param>
         /// <param name="type">The column type.</param>
-        internal ArmpTableColumn(uint id, string name, ArmpType type) : this(id)
+        internal ArmpTableColumn(ArmpTableBase parentTable, uint id, string name, ArmpType type) : this(parentTable, id)
         {
             Name = name;
             Type = type;
@@ -86,6 +89,11 @@ namespace LibARMP
         /// <remarks><para>Only used if the column is child of an array-type column.</para><para><b>DRAGON ENGINE V2 ONLY</b></para></remarks>
         internal ArmpTableColumn Parent { get; set; }
 
+        /// <summary>
+        /// The <see cref="ArmpTableBase"/> this column belongs to.
+        /// </summary>
+        internal ArmpTableBase ParentTable { get; set; }
+
 
 
         /// <summary>
@@ -104,7 +112,7 @@ namespace LibARMP
         /// <returns>A copy of this <see cref="ArmpTableColumn"/>.</returns>
         public ArmpTableColumn Copy()
         {
-            ArmpTableColumn copy = new ArmpTableColumn(ID, Name, Type);
+            ArmpTableColumn copy = new ArmpTableColumn(ParentTable, ID, Name, Type);
             copy.Index = Index;
             copy.IsValid = IsValid;
             copy.ColumnMetadata = ColumnMetadata;

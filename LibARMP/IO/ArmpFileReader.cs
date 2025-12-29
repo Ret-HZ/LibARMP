@@ -224,7 +224,7 @@ namespace LibARMP.IO
 
             for (int c = 0; c < table.TableInfo.ColumnCount; c++)
             {
-                ArmpTableColumn column = new ArmpTableColumn((uint)c, columnNames[c], columnDataTypes[c]);
+                ArmpTableColumn column = new ArmpTableColumn(table, (uint)c, columnNames[c], columnDataTypes[c]);
 
                 if (table.TableInfo.HasMemberInfo)
                 {
@@ -467,7 +467,7 @@ namespace LibARMP.IO
 
             for (uint c = 0; c < table.TableInfo.ColumnCount; c++)
             {
-                ArmpTableColumn column = new ArmpTableColumn(c, columnNames[(int)c], columnDataTypes[(int)c]);
+                ArmpTableColumn column = new ArmpTableColumn(table,c, columnNames[(int)c], columnDataTypes[(int)c]);
                 if (table.TableInfo.HasColumnMetadata) column.ColumnMetadata = columnMetadata[(int)c];
 
                 table.Columns.Add(column);

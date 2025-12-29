@@ -866,7 +866,7 @@ namespace LibARMP
         {
             uint id = (uint)Columns.Count;
             ArmpType armpType = DataTypes.GetArmpTypeByCSType(columnType);
-            ArmpTableColumn column = new ArmpTableColumn(id, columnName, armpType);
+            ArmpTableColumn column = new ArmpTableColumn(this, id, columnName, armpType);
             column.Index = id;
             if (TableInfo.FormatIsDragonEngine) OrderedColumnIDs.Add((int)id);
             column.IsValid = true;
