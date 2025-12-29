@@ -401,8 +401,8 @@ namespace LibARMP
         /// <summary>
         /// Returns a specific column in the table.
         /// </summary>
-        /// <param name="name">The ID of the column to get.</param>
-        /// <param name="entry">When this method returns, contains the column associated with the specified ID, if the column is found; otherwise, <see langword="null"/>. This parameter is passed uninitialized.</param>
+        /// <param name="id">The ID of the column to get.</param>
+        /// <param name="column">When this method returns, contains the column associated with the specified ID, if the column is found; otherwise, <see langword="null"/>. This parameter is passed uninitialized.</param>
         /// <returns><see langword="true"/> if a column with the specified ID exists; otherwise <see langword="false"/>.</returns>
         public bool TryGetColumn (uint id, out ArmpTableColumn column)
         {
@@ -422,8 +422,8 @@ namespace LibARMP
         /// <summary>
         /// Returns a specific column in the table.
         /// </summary>
-        /// <param name="name">The name of the column to get.</param>
-        /// <param name="entry">When this method returns, contains the column associated with the specified name, if the column is found; otherwise, <see langword="null"/>. This parameter is passed uninitialized.</param>
+        /// <param name="columnName">The name of the column to get.</param>
+        /// <param name="column">When this method returns, contains the column associated with the specified name, if the column is found; otherwise, <see langword="null"/>. This parameter is passed uninitialized.</param>
         /// <returns><see langword="true"/> if a column with the specified name exists; otherwise <see langword="false"/>.</returns>
         public bool TryGetColumn (string columnName, out ArmpTableColumn column)
         {
