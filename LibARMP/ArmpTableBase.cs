@@ -866,7 +866,7 @@ namespace LibARMP
         {
             uint id = (uint)Columns.Count;
             ArmpType armpType = DataTypes.GetArmpTypeByCSType(columnType);
-            ArmpTableColumn column = new ArmpTableColumn(this, id, columnName, armpType);
+            ArmpTableColumn column = new ArmpTableColumn(this, columnName, armpType);
             column.Index = id;
             if (TableInfo.FormatIsDragonEngine) OrderedColumnIDs.Add((int)id);
             column.IsValid = true;
@@ -1003,7 +1003,7 @@ namespace LibARMP
         public ArmpEntry AddEntry (string name = "")
         {
             uint id = (uint)Entries.Count;
-            ArmpEntry entry = new ArmpEntry(this, id, name, id);
+            ArmpEntry entry = new ArmpEntry(this, name, id);
             entry.SetDefaultColumnContent();
             Entries.Add(entry);
             if (TableInfo.FormatIsDragonEngine) OrderedEntryIDs.Add(id);
@@ -1019,20 +1019,12 @@ namespace LibARMP
         /// <exception cref="EntryInsertException">The specified ID is greater than the amount of entries in the table.</exception>
         public ArmpEntry InsertEntry (uint id, string name = "")
         {
-            // TODO: Entry order needs to be adjusted after insertion.
             if (id <= Entries.Count)
             {
-                ArmpEntry entry = new ArmpEntry(this, id, name, id);
+                ArmpEntry entry = new ArmpEntry(this, name, id);
                 entry.SetDefaultColumnContent();
                 Entries.Insert((int)id, entry);
 
-                if (Entries.Count > id)
-                {
-                    foreach (ArmpEntry e in Entries.GetRange((int)id + 1, Entries.Count - (int)id - 1))
-                    {
-                        e.ID++;
-                    }
-                }
                 return entry;
             }
             else
@@ -1049,14 +1041,9 @@ namespace LibARMP
         /// <exception cref="EntryNotFoundException">The table has no entry with the specified ID.</exception>
         public void DeleteEntry (uint id)
         {
-            // TODO: Entry order needs to be adjusted after deletion.
             if (id < Entries.Count)
             {
                 Entries.RemoveAt((int)id);
-                foreach (ArmpEntry entry in Entries.GetRange((int)id, Entries.Count - (int)id))
-                {
-                    entry.ID--;
-                }
             }
             else
             {

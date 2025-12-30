@@ -32,9 +32,8 @@ namespace LibARMP
         /// <param name="id">The entry ID.</param>
         /// <param name="name">The entry name.</param>
         /// <param name="index">The entry index.</param>
-        internal ArmpEntry(ArmpTableBase parentTable, uint id, string name, uint index) : this(parentTable)
+        internal ArmpEntry(ArmpTableBase parentTable, string name, uint index) : this(parentTable)
         {
-            ID = id;
             Name = name;
             Index = index;
         }
@@ -44,7 +43,14 @@ namespace LibARMP
         /// <summary>
         /// Gets the entry ID.
         /// </summary>
-        public uint ID { get; internal set; }
+        public uint ID
+        {
+            get
+            {
+                if (ParentTable == null) return 0;
+                return (uint)ParentTable.Entries.IndexOf(this);
+            }
+        }
 
         /// <summary>
         /// Gets or sets the entry name.
@@ -88,7 +94,7 @@ namespace LibARMP
         /// <returns>A copy of this <see cref="ArmpEntry"/>.</returns>
         public ArmpEntry Copy (ArmpTableBase parentTable)
         {
-            ArmpEntry copy = new ArmpEntry(parentTable, ID, Name, Index);
+            ArmpEntry copy = new ArmpEntry(parentTable, Name, Index);
             copy.IsValid = IsValid;
             copy.Flags = Flags;
             copy.Data = new Dictionary<string, object>(Data);

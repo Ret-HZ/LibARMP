@@ -224,7 +224,7 @@ namespace LibARMP.IO
 
             for (int c = 0; c < table.TableInfo.ColumnCount; c++)
             {
-                ArmpTableColumn column = new ArmpTableColumn(table, (uint)c, columnNames[c], columnDataTypes[c]);
+                ArmpTableColumn column = new ArmpTableColumn(table, columnNames[c], columnDataTypes[c]);
 
                 if (table.TableInfo.HasMemberInfo)
                 {
@@ -467,7 +467,7 @@ namespace LibARMP.IO
 
             for (uint c = 0; c < table.TableInfo.ColumnCount; c++)
             {
-                ArmpTableColumn column = new ArmpTableColumn(table,c, columnNames[(int)c], columnDataTypes[(int)c]);
+                ArmpTableColumn column = new ArmpTableColumn(table, columnNames[(int)c], columnDataTypes[(int)c]);
                 if (table.TableInfo.HasColumnMetadata) column.ColumnMetadata = columnMetadata[(int)c];
 
                 table.Columns.Add(column);
@@ -761,9 +761,9 @@ namespace LibARMP.IO
             for (uint i = 0; i < table.TableInfo.EntryCount; i++)
             {
                 if (!table.TableInfo.HasOrderedEntries)
-                    entry = new ArmpEntry(table, i, table.EntryNames[(int)i], i);
+                    entry = new ArmpEntry(table, table.EntryNames[(int)i], i);
                 else
-                    entry = new ArmpEntry(table, i, table.EntryNames[(int)i], (uint)table.OrderedEntryIDs.IndexOf(i));
+                    entry = new ArmpEntry(table, table.EntryNames[(int)i], (uint)table.OrderedEntryIDs.IndexOf(i));
 
                 entry.ParentTable = table;
                 table.Entries.Add(entry);

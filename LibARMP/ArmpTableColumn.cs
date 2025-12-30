@@ -11,10 +11,9 @@ namespace LibARMP
         /// </summary>
         /// <param name="parentTable">The table that contains this column.</param>
         /// <param name="id">The column ID.</param>
-        internal ArmpTableColumn(ArmpTableBase parentTable, uint id)
+        internal ArmpTableColumn(ArmpTableBase parentTable)
         {
             ParentTable = parentTable;
-            ID = id;
             ColumnMetadata = -1;
             GameVarID = -1;
         }
@@ -26,7 +25,7 @@ namespace LibARMP
         /// <param name="id">The column ID.</param>
         /// <param name="name">The column name.</param>
         /// <param name="type">The column type.</param>
-        internal ArmpTableColumn(ArmpTableBase parentTable, uint id, string name, ArmpType type) : this(parentTable, id)
+        internal ArmpTableColumn(ArmpTableBase parentTable, string name, ArmpType type) : this(parentTable)
         {
             Name = name;
             Type = type;
@@ -35,7 +34,14 @@ namespace LibARMP
         /// <summary>
         /// Gets the column ID.
         /// </summary>
-        public uint ID { get; internal set; }
+        public uint ID
+        {
+            get
+            {
+                if (ParentTable == null) return 0;
+                return (uint)ParentTable.Columns.IndexOf(this);
+            }
+        }
 
         /// <summary>
         /// Gets the column name.
@@ -112,7 +118,7 @@ namespace LibARMP
         /// <returns>A copy of this <see cref="ArmpTableColumn"/>.</returns>
         public ArmpTableColumn Copy()
         {
-            ArmpTableColumn copy = new ArmpTableColumn(ParentTable, ID, Name, Type);
+            ArmpTableColumn copy = new ArmpTableColumn(ParentTable, Name, Type);
             copy.Index = Index;
             copy.IsValid = IsValid;
             copy.ColumnMetadata = ColumnMetadata;
