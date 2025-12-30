@@ -119,7 +119,7 @@ namespace LibARMP
 
                 if (TableInfo.HasMemberInfo)
                 {
-                    copySpecOrdered[StructureSpec.IndexOf(column.MemberInfo)] = copyColumn.MemberInfo = column.MemberInfo.Copy(copyColumn);
+                    copySpecOrdered[StructureSpec.IndexOf(column.MemberInfo)] = copyColumn.MemberInfo = column.MemberInfo.Copy(copyColumn, true);
                 }
 
                 copy.ColumnNameCache.Add(copyColumn.Name, copyColumn);
@@ -139,7 +139,7 @@ namespace LibARMP
 
                         if (TableInfo.HasMemberInfo)
                         {
-                            copySpecOrdered[StructureSpec.IndexOf(child.MemberInfo)] = copyChild.MemberInfo = child.MemberInfo.Copy(copyChild);
+                            copySpecOrdered[StructureSpec.IndexOf(child.MemberInfo)] = copyChild.MemberInfo = child.MemberInfo.Copy(copyChild, true);
                         }
                     }
                 }
@@ -149,7 +149,7 @@ namespace LibARMP
             if (TableInfo.HasMemberInfo)
             {
                 copy.StructureSpec = new List<ArmpMemberInfo>(copySpecOrdered);
-                copy.StructurePacked = true;
+                copy.StructurePacked = false;
             }
 
             // Copy the column order.
