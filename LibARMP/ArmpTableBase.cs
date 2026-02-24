@@ -20,7 +20,7 @@ namespace LibARMP
             Entries = new List<ArmpEntry>(expectedEntryCount);
             Columns = new List<ArmpTableColumn>(expectedColumnCount);
             OrderedEntryIDs = new List<uint>();
-            OrderedColumnIDs = new List<int>();
+            OrderedColumnIDs = new List<uint>();
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace LibARMP
         /// <summary>
         /// Column order.
         /// </summary>
-        internal List<int> OrderedColumnIDs { get; set; }
+        internal List<uint> OrderedColumnIDs { get; set; }
 
         /// <summary>
         /// List of columns.
@@ -153,7 +153,7 @@ namespace LibARMP
             }
 
             // Copy the column order.
-            if (TableInfo.FormatIsDragonEngine) copy.OrderedColumnIDs = new List<int>(OrderedColumnIDs);
+            if (TableInfo.FormatIsDragonEngine) copy.OrderedColumnIDs = new List<uint>(OrderedColumnIDs);
 
             copiedColumns.Clear();
 
@@ -868,7 +868,7 @@ namespace LibARMP
             ArmpType armpType = DataTypes.GetArmpTypeByCSType(columnType);
             ArmpTableColumn column = new ArmpTableColumn(this, columnName, armpType);
             column.Index = id;
-            if (TableInfo.FormatIsDragonEngine) OrderedColumnIDs.Add((int)id);
+            if (TableInfo.FormatIsDragonEngine) OrderedColumnIDs.Add(id);
             column.IsValid = true;
             if (armpType.IsArray) column.Children = new List<ArmpTableColumn>();
 

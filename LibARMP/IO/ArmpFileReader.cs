@@ -198,12 +198,12 @@ namespace LibARMP.IO
 
             if (table.TableInfo.HasOrderedColumns)
             {
-                table.OrderedColumnIDs = Util.IterateArray<int>(reader, table.TableInfo.ptrColumnOrder, table.TableInfo.ColumnCount, false);
+                table.OrderedColumnIDs = Util.IterateArray<uint>(reader, table.TableInfo.ptrColumnOrder, table.TableInfo.ColumnCount, false);
             }
             else
             {
-                table.OrderedColumnIDs = new List<int>(table.TableInfo.ColumnCount);
-                for (int i = 0; i < table.TableInfo.ColumnCount; i++)
+                table.OrderedColumnIDs = new List<uint>(table.TableInfo.ColumnCount);
+                for (uint i = 0; i < table.TableInfo.ColumnCount; i++)
                     table.OrderedColumnIDs.Add(i);
             }
             #endregion
@@ -241,7 +241,7 @@ namespace LibARMP.IO
                 }
 
                 column.IsValid = columnValidity[c];
-                column.Index = (uint)(table.TableInfo.HasOrderedColumns ? table.OrderedColumnIDs.IndexOf(c) : c);
+                column.Index = (uint)(table.TableInfo.HasOrderedColumns ? table.OrderedColumnIDs.IndexOf((uint)c) : c);
                 if (table.TableInfo.HasGameVarColumns) column.GameVarID = gameVarColumnIDs[c];
                 if (table.TableInfo.HasColumnMetadata) column.ColumnMetadata = columnMetadata[c];
 
