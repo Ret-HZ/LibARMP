@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LibARMP.Exceptions;
+using System;
 using System.Collections.Generic;
 
 namespace LibARMP
@@ -60,10 +61,10 @@ namespace LibARMP
         internal ArmpMemberInfo MemberInfo { get; set; }
 
         /// <summary>
-        /// Gets or sets the column's display index, which may differ from its ID.
+        /// Gets the column's display index, which may differ from its ID.
         /// </summary>
         /// <remarks><para>Can be null if unused.</para></remarks>
-        public uint Index { get; set; }
+        public uint Index { get; internal set; }
 
         /// <summary>
         /// Gets or sets if the column is valid.
@@ -128,6 +129,40 @@ namespace LibARMP
                 copy.Children = new List<ArmpTableColumn>(Children.Count);
 
             return copy;
+        }
+
+
+        /// <summary>
+        /// Sets the display index, which may differ from the <see cref="ID"/>. 
+        /// If any other <see cref="ArmpTableColumn"/> is already making use of the provided index, it will be updated with this <see cref="ArmpTableColumn"/>'s previous index.
+        /// </summary>
+        /// <param name="index">The new index.</param>
+        /// <exception cref="ColumnNoIndexException">The does not have column indices.</exception>
+        /// <exception cref="IndexOutOfRangeException">The index value is out of range.</exception>
+        public void SetIndex(uint index)
+        {
+            if (ParentTable == null) return; // TODO: Maybe throw an exception here to warn about this edge case
+            if (!ParentTable.TableInfo.HasOrderedColumns)
+                throw new ColumnNoIndexException();
+            if (index >= ParentTable.Columns.Count)
+                throw new IndexOutOfRangeException($"The value of 'index' ({index}) cannot be equal or greater than the total amount of columns in the table ({ParentTable.Columns.Count}).");
+
+            int columnID = (int)ID;
+            Index = index;
+            uint oldIndex = ParentTable.OrderedColumnIDs[columnID];
+
+            // Swap the index value for any column already using it
+            for (int i = 0; i < ParentTable.Columns.Count; i++)
+            {
+                if (ParentTable.OrderedColumnIDs[i] == index)
+                {
+                    ParentTable.OrderedColumnIDs[i] = oldIndex;
+                    ParentTable.Columns[i].Index = oldIndex;
+                    break;
+                }
+            }
+
+            ParentTable.OrderedColumnIDs[columnID] = index;
         }
     }
 }

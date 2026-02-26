@@ -689,19 +689,11 @@ namespace LibARMP
         /// <param name="newIndex">The new index.</param>
         /// <exception cref="ColumnNoIndexException">The table has no column indices.</exception>
         /// <exception cref="ColumnNotFoundException">The table has no column with the specified ID.</exception>
+        /// <exception cref="IndexOutOfRangeException">The index value is out of range.</exception>
         public void SetColumnIndex (uint id, uint newIndex)
         {
-            if (!TableInfo.HasOrderedColumns) throw new ColumnNoIndexException();
-
-            try
-            {
-                Columns[(int)id].Index = newIndex;
-                // TODO: Adjust all other column indices affected by the change.
-            }
-            catch
-            {
-                throw new ColumnNotFoundException(id);
-            }
+            ArmpTableColumn column = GetColumn(id);
+            column.SetIndex(newIndex);
         }
 
 
@@ -712,20 +704,11 @@ namespace LibARMP
         /// <param name="newIndex">The new index.</param>
         /// <exception cref="ColumnNoIndexException">The table has no column indices.</exception>
         /// <exception cref="ColumnNotFoundException">The table has no column with the specified name.</exception>
+        /// <exception cref="IndexOutOfRangeException">The index value is out of range.</exception>
         public void SetColumnIndex (string columnName, uint newIndex)
         {
-            if (!TableInfo.HasOrderedColumns) throw new ColumnNoIndexException();
-
-            try
-            {
-                int id = (int)GetColumnID(columnName);
-                Columns[id].Index = newIndex;
-                // TODO: Adjust all other column indices affected by the change.
-            }
-            catch
-            {
-                throw new ColumnNotFoundException(columnName);
-            }
+            ArmpTableColumn column = GetColumn(columnName);
+            column.SetIndex(newIndex);
         }
 
 

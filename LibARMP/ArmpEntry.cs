@@ -64,10 +64,10 @@ namespace LibARMP
         internal IDictionary<string, object> Data { get; set; }
 
         /// <summary>
-        /// Gets or sets the entry's display index, which may differ from its ID.
+        /// Gets the entry's display index, which may differ from its ID.
         /// </summary>
         /// <remarks><para>DRAGON ENGINE ONLY</para></remarks>
-        public uint Index { get; set; }
+        public uint Index { get; internal set; }
 
         /// <summary>
         /// Gets or sets if the entry is valid.
@@ -117,6 +117,37 @@ namespace LibARMP
             }
 
             return copy;
+
+
+        /// <summary>
+        /// Sets the display index, which may differ from the <see cref="ID"/>. 
+        /// If any other <see cref="ArmpEntry"/> is already making use of the provided index, it will be updated with this <see cref="ArmpEntry"/>'s previous index.
+        /// </summary>
+        /// <param name="index">The new index.</param>
+        /// <exception cref="IndexOutOfRangeException">The index value is out of range.</exception>
+        public void SetIndex(uint index)
+        {
+            if (ParentTable == null) return; // TODO: Maybe throw an exception here to warn about this edge case
+            if (!ParentTable.TableInfo.HasOrderedEntries) return; // TODO: Throw exception (?)
+            if (index >= ParentTable.Entries.Count)
+                throw new IndexOutOfRangeException($"The value of 'index' ({index}) cannot be equal or greater than the total amount of entries in the table ({ParentTable.Entries.Count}).");
+
+            int entryID = (int)ID;
+            Index = index;
+            uint oldIndex = ParentTable.OrderedEntryIDs[entryID];
+            
+            // Swap the index value for any entry already using it
+            for (int i = 0; i < ParentTable.Entries.Count; i++)
+            {
+                if (ParentTable.OrderedEntryIDs[i] == index)
+                {
+                    ParentTable.OrderedEntryIDs[i] = oldIndex;
+                    ParentTable.Entries[i].Index = oldIndex;
+                    break;
+                }
+            }
+
+            ParentTable.OrderedEntryIDs[entryID] = index;
         }
 
 
