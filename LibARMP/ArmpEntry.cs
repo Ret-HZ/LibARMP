@@ -92,31 +92,45 @@ namespace LibARMP
         /// </summary>
         /// <param name="parentTable">The table this copy is intended to.</param>
         /// <returns>A copy of this <see cref="ArmpEntry"/>.</returns>
-        public ArmpEntry Copy (ArmpTableBase parentTable)
+        /// <remarks><b>Important:</b> The entry is not being added to the target table, only prepared for it.</remarks>
+        internal ArmpEntry Copy (ArmpTableBase parentTable)
         {
             ArmpEntry copy = new ArmpEntry(parentTable, Name, Index);
             copy.IsValid = IsValid;
             copy.Flags = Flags;
-            copy.Data = new Dictionary<string, object>(Data);
-            //Copy the table type column values since the dictionary copy does not apply to references
-            foreach(ArmpTableColumn column in ParentTable.GetColumnsByType<ArmpTable>())
+
+            // Only copy the columns present in the target table
+            foreach(ArmpTableColumn column in copy.ParentTable.GetAllColumns())
             {
+                if (column.Type.IsArray) continue;
                 if (Data.ContainsKey(column.Name))
                 {
-                    var originalObject = GetValueFromColumn(column);
-                    if (originalObject != null)
+                    if (column.Type.CSType == typeof(ArmpTable))
                     {
-                        ArmpTable original = (ArmpTable)originalObject;
-                        copy.Data[column.Name] = original.Copy(true);
+                        ArmpTable original = GetValueFromColumn<ArmpTable>(column);
+                        if (original != null)
+                        {
+                            copy.Data[column.Name] = original.Copy(true);
+                        }
+                        else
+                        {
+                            copy.Data[column.Name] = null;
+                        }
                     }
                     else
                     {
-                        copy.Data[column.Name] = null;
+                        copy.Data[column.Name] = Data[column.Name];
                     }
+                }
+                // Column didn't exist in the source table, so we initialise it to its default value
+                else
+                {
+                    copy.SetDefaultColumnContent(column);
                 }
             }
 
             return copy;
+        }
 
 
         /// <summary>
