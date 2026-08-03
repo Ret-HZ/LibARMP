@@ -17,4 +17,36 @@
     <PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.14" />
   </ItemGroup>
 
+
+  <!-- Git commit hash and build config injection -->
+  <PropertyGroup>
+    <CommitPrefix>dev</CommitPrefix>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <CommitPrefix>release</CommitPrefix>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GitCommitHash Condition="'$(GitCommitHash)' == ''">unknown</GitCommitHash>
+  </PropertyGroup>
+
+  <Target Name="GenerateGitCommitFile" BeforeTargets="CoreCompile">
+    <Exec Command="git rev-parse --short HEAD" ConsoleToMSBuild="true" IgnoreExitCode="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="GitCommitHash" />
+    </Exec>
+
+    <ReadLinesFromFile File="Properties\AssemblyInfo.cs">
+      <Output TaskParameter="Lines" ItemName="AssemblyInfoLines"/>
+    </ReadLinesFromFile>
+    <PropertyGroup>
+      <AssemblyInfoText>@(AssemblyInfoLines, '%0A')</AssemblyInfoText>
+      <AssemblyVersionNumber>$([System.Text.RegularExpressions.Regex]::Match('$(AssemblyInfoText)', '(?m)^\s*\[assembly:\s*(?:System\.Reflection\.)?AssemblyVersion\s*\(\s*"([^"]+)"\s*\)\s*\]', System.Text.RegularExpressions.RegexOptions.Multiline).Groups[1].Value)</AssemblyVersionNumber>
+    </PropertyGroup>
+    
+    <WriteLinesToFile File="$(IntermediateOutputPath)GitCommitInfo.cs" Lines="[assembly: System.Reflection.AssemblyMetadata(&quot;buildinfo&quot;, &quot;$(CommitPrefix)-$(GitCommitHash)&quot;)]&#x0A;[assembly: System.Reflection.AssemblyInformationalVersion(&quot;$(AssemblyVersionNumber) $(CommitPrefix)-$(GitCommitHash)&quot;)]" Overwrite="true" />
+    <ItemGroup>
+      <Compile Include="$(IntermediateOutputPath)GitCommitInfo.cs" />
+    </ItemGroup>
+  </Target>
+  
 </Project>
