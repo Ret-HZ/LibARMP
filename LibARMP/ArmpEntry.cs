@@ -166,6 +166,38 @@ namespace LibARMP
 
 
         /// <summary>
+        /// Attempts to set the display index, which may differ from the <see cref="ID"/>. 
+        /// If any other <see cref="ArmpEntry"/> is already making use of the provided index, it will be updated with this <see cref="ArmpEntry"/>'s previous index.
+        /// </summary>
+        /// <param name="index">The new index.</param>
+        /// <returns>Returns <see langword="true"/> if the operation was successful, otherwise <see langword="false"/>.</returns>
+        public bool TrySetIndex(uint index)
+        {
+            if (ParentTable == null) return false;
+            if (!ParentTable.TableInfo.HasOrderedEntries) return false;
+            if (index >= ParentTable.Entries.Count) return false;
+
+            int entryID = (int)ID;
+            Index = index;
+            uint oldIndex = ParentTable.OrderedEntryIDs[entryID];
+
+            // Swap the index value for any entry already using it
+            for (int i = 0; i < ParentTable.Entries.Count; i++)
+            {
+                if (ParentTable.OrderedEntryIDs[i] == index)
+                {
+                    ParentTable.OrderedEntryIDs[i] = oldIndex;
+                    ParentTable.Entries[i].Index = oldIndex;
+                    break;
+                }
+            }
+
+            ParentTable.OrderedEntryIDs[entryID] = index;
+            return true;
+        }
+
+
+        /// <summary>
         /// Sets the value for the column to default.
         /// </summary>
         /// <param name="column">The <see cref="ArmpTableColumn"/>.</param>
