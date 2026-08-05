@@ -164,5 +164,37 @@ namespace LibARMP
 
             ParentTable.OrderedColumnIDs[columnID] = index;
         }
+
+
+        /// <summary>
+        /// Attempts to set the display index, which may differ from the <see cref="ID"/>. 
+        /// If any other <see cref="ArmpTableColumn"/> is already making use of the provided index, it will be updated with this <see cref="ArmpTableColumn"/>'s previous index.
+        /// </summary>
+        /// <param name="index">The new index.</param>
+        /// <returns>Returns <see langword="true"/> if the operation was successful, otherwise <see langword="false"/>.</returns>
+        public bool TrySetIndex(uint index)
+        {
+            if (ParentTable == null) return false;
+            if (!ParentTable.TableInfo.HasOrderedColumns) return false;
+            if (index >= ParentTable.Columns.Count) return false;
+
+            int columnID = (int)ID;
+            Index = index;
+            uint oldIndex = ParentTable.OrderedColumnIDs[columnID];
+
+            // Swap the index value for any column already using it
+            for (int i = 0; i < ParentTable.Columns.Count; i++)
+            {
+                if (ParentTable.OrderedColumnIDs[i] == index)
+                {
+                    ParentTable.OrderedColumnIDs[i] = oldIndex;
+                    ParentTable.Columns[i].Index = oldIndex;
+                    break;
+                }
+            }
+
+            ParentTable.OrderedColumnIDs[columnID] = index;
+            return true;
+        }
     }
 }
