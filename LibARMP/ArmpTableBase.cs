@@ -289,16 +289,6 @@ namespace LibARMP
         }
 
 
-        public bool SetEntry (ArmpEntry entry)
-        {
-            if (entry == null) throw new ArgumentNullException("Entry cannot be null.");
-
-            //TODO need to check that the entry columns and data match the current table
-            Entries[(int)entry.ID] = Util.DeepCopy<ArmpEntry>(entry);
-            return true; //PLACEHOLDER
-        }
-
-
         /// <summary>
         /// Gets all entry names.
         /// </summary>
