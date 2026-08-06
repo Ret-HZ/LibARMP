@@ -895,7 +895,6 @@ namespace LibARMP
         /// <returns>A <see cref="Boolean"/> indicating if the operation completed successfully.</returns>
         public bool DeleteColumn (string columnName)
         {
-            //TODO: Deleting a column will break how the game reads subsequent columns. Indices need to be updated. Make it an optional argument?
             if (ColumnNameCache.ContainsKey(columnName))
             {
                 ArmpTableColumn column = ColumnNameCache[columnName];
@@ -911,10 +910,10 @@ namespace LibARMP
                 // Remove column as parent from array elements
                 if (column.Children?.Count > 0)
                 {
-                foreach (ArmpTableColumn child in column.Children)
-                {
-                    child.Parent = null;
-                }
+                    foreach (ArmpTableColumn child in column.Children)
+                    {
+                        child.Parent = null;
+                    }
                     column.Children.Clear();
                 }
 
@@ -925,6 +924,24 @@ namespace LibARMP
                     StructureSpec.Remove(column.MemberInfo);
                     column.MemberInfo = null;
                     if (StructurePacked) StructurePacked = !column.IsValid;
+                }
+
+                // Update column indices to account for the deletion
+                if (TableInfo.FormatIsDragonEngine)
+                {
+                    uint removedColumnID = column.ID;
+                    uint removedColumnIndex = column.Index;
+                    OrderedColumnIDs.Remove(column.ID);
+                    for (int i = 0; i < OrderedColumnIDs.Count; i++)
+                    {
+                        uint orderedColumnID = OrderedColumnIDs[i];
+                        if (orderedColumnID > removedColumnID)
+                        {
+                            OrderedColumnIDs[i] = orderedColumnID - 1;
+                            ArmpTableColumn col = Columns[(int)orderedColumnID];
+                            col.Index = col.Index - 1;
+                        }
+                    }
                 }
 
                 Columns.Remove(column);
