@@ -1004,6 +1004,7 @@ namespace LibARMP
         /// <summary>
         /// Creates and inserts a new entry at the specified ID.
         /// </summary>
+        /// <remarks>If the table makes use of ordered entries, indices will be updated accordingly to account for the insertion.</remarks>
         /// <param name="id">The new entry ID.</param>
         /// <param name="name">The new entry name.</param>
         /// <exception cref="EntryInsertException">The specified ID is greater than the amount of entries in the table.</exception>
@@ -1014,6 +1015,23 @@ namespace LibARMP
                 ArmpEntry entry = new ArmpEntry(this, name, id);
                 entry.SetDefaultColumnContent();
                 Entries.Insert((int)id, entry);
+
+                // Update entry indices to account for the insertion
+                if (TableInfo.FormatIsDragonEngine)
+                {
+                    for (int i = 0; i < OrderedEntryIDs.Count; i++)
+                    {
+                        uint orderedEntryID = OrderedEntryIDs[i];
+                        if (orderedEntryID >= id)
+                        {
+                            OrderedEntryIDs[i] = orderedEntryID + 1;
+                            ArmpEntry ent = Entries[(int)orderedEntryID];
+                            ent.Index = ent.Index + 1;
+                        }
+                    }
+
+                    OrderedEntryIDs.Insert((int)id, id);
+                }
 
                 return entry;
             }
