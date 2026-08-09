@@ -18,8 +18,8 @@ namespace LibARMP.UnitTests
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
             Assert.AreEqual(armp.Version, armp_new.Version);
-            Assert.AreEqual(armp.Revision, armp_new.Revision);
-            Assert.AreEqual(armp.FormatVersion, armp_new.FormatVersion);
+            Assert.AreEqual(armp_new.Revision, armp.Revision);
+            Assert.AreEqual(armp_new.FormatVersion, armp.FormatVersion);
             CollectionAssert.AreEqual(armp.GetMainTable().GetEntryNames(), armp_new.GetMainTable().GetEntryNames());
             CollectionAssert.AreEqual(armp.GetMainTable().GetColumnNames(), armp_new.GetMainTable().GetColumnNames());
             Assert.AreEqual(armp.GetMainTable().GetEntry(1).GetValueFromColumn("string"), armp_new.GetMainTable().GetEntry(1).GetValueFromColumn("string"));
@@ -35,7 +35,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -48,7 +48,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -61,7 +61,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -74,7 +74,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -87,7 +87,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -100,7 +100,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -113,7 +113,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -126,7 +126,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -139,7 +139,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -152,7 +152,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -165,7 +165,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -181,8 +181,8 @@ namespace LibARMP.UnitTests
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
             ArmpTable table_new = (ArmpTable)armp_new.GetMainTable().GetEntry("value").GetValueFromColumn(columnName);
-            Assert.AreEqual(table_new.GetEntry(1).GetValueFromColumn("u64"), expectedValue);
-            Assert.AreEqual(table_new.GetEntry(1).Name, "new_name");
+            Assert.AreEqual(expectedValue, table_new.GetEntry(1).GetValueFromColumn("u64"));
+            Assert.AreEqual("new_name", table_new.GetEntry(1).Name);
         }
 
 
@@ -217,7 +217,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").Name = expectedValue;
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(expectedValue).Name, expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(expectedValue).Name);
         }
 
 
@@ -258,8 +258,8 @@ namespace LibARMP.UnitTests
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
             Assert.AreEqual(armp.Version, armp_new.Version);
-            Assert.AreEqual(armp.Revision, armp_new.Revision);
-            Assert.AreEqual(armp.FormatVersion, armp_new.FormatVersion);
+            Assert.AreEqual(armp_new.Revision, armp.Revision);
+            Assert.AreEqual(armp_new.FormatVersion, armp.FormatVersion);
             Assert.AreEqual(armp.GetMainTable().TableInfo.StorageMode, armp_new.GetMainTable().TableInfo.StorageMode);
             CollectionAssert.AreEqual(armp.GetMainTable().GetEntryNames(), armp_new.GetMainTable().GetEntryNames());
             CollectionAssert.AreEqual(armp.GetMainTable().GetColumnNames(), armp_new.GetMainTable().GetColumnNames());
@@ -276,7 +276,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -289,7 +289,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -302,7 +302,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -315,7 +315,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -328,7 +328,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -341,7 +341,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -354,7 +354,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -367,7 +367,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -380,7 +380,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -393,7 +393,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -406,7 +406,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -419,7 +419,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -435,8 +435,8 @@ namespace LibARMP.UnitTests
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
             ArmpTable table_new = (ArmpTable)armp_new.GetMainTable().GetEntry("value").GetValueFromColumn(columnName);
-            Assert.AreEqual(table_new.GetEntry(1).GetValueFromColumn("u8"), expectedValue);
-            Assert.AreEqual(table_new.GetEntry(1).Name, "new_name");
+            Assert.AreEqual(expectedValue, table_new.GetEntry(1).GetValueFromColumn("u8"));
+            Assert.AreEqual("new_name", table_new.GetEntry(1).Name);
         }
 
 
@@ -471,7 +471,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").Name = expectedValue;
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(expectedValue).Name, expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(expectedValue).Name);
         }
         #endregion
 
@@ -487,8 +487,8 @@ namespace LibARMP.UnitTests
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
             Assert.AreEqual(armp.Version, armp_new.Version);
-            Assert.AreEqual(armp.Revision, armp_new.Revision);
-            Assert.AreEqual(armp.FormatVersion, armp_new.FormatVersion);
+            Assert.AreEqual(armp_new.Revision, armp.Revision);
+            Assert.AreEqual(armp_new.FormatVersion, armp.FormatVersion);
             Assert.AreEqual(armp.GetMainTable().TableInfo.StorageMode, armp_new.GetMainTable().TableInfo.StorageMode);
             CollectionAssert.AreEqual(armp.GetMainTable().GetEntryNames(), armp_new.GetMainTable().GetEntryNames());
             CollectionAssert.AreEqual(armp.GetMainTable().GetColumnNames(), armp_new.GetMainTable().GetColumnNames());
@@ -505,7 +505,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -518,7 +518,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -531,7 +531,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -544,7 +544,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -557,7 +557,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -570,7 +570,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -583,7 +583,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -596,7 +596,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -609,7 +609,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -622,7 +622,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -635,7 +635,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -648,7 +648,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName), expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(1).GetValueFromColumn(columnName));
         }
 
 
@@ -664,8 +664,8 @@ namespace LibARMP.UnitTests
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
             ArmpTable table_new = (ArmpTable)armp_new.GetMainTable().GetEntry("value").GetValueFromColumn(columnName);
-            Assert.AreEqual(table_new.GetEntry(1).GetValueFromColumn("u8"), expectedValue);
-            Assert.AreEqual(table_new.GetEntry(1).Name, "new_name");
+            Assert.AreEqual(expectedValue, table_new.GetEntry(1).GetValueFromColumn("u8"));
+            Assert.AreEqual("new_name", table_new.GetEntry(1).Name);
         }
 
 
@@ -700,7 +700,7 @@ namespace LibARMP.UnitTests
             armp.GetMainTable().GetEntry("value").Name = expectedValue;
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry(expectedValue).Name, expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry(expectedValue).Name);
         }
         #endregion
     }
