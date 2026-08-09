@@ -1074,15 +1074,8 @@ namespace LibARMP
             if (ColumnNameCache.ContainsKey(columnName))
             {
                 ArmpTableColumn column = ColumnNameCache[columnName];
-                if (value.GetType() == column.Type.CSType)
-                {
-                    ArmpEntry entry = GetEntry(id);
-                    entry.SetValueFromColumn(columnName, value);
-                }
-                else
-                {
-                    throw new TypeMismatchException(column.Type.CSType, value.GetType());
-                }
+                ArmpEntry entry = GetEntry(id);
+                entry.SetValueFromColumn(column, value);
             }
             else
             {
