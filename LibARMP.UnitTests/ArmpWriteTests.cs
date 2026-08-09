@@ -200,12 +200,12 @@ namespace LibARMP.UnitTests
         [TestMethod]
         public void entryIndex_v1()
         {
-            int expectedValue = 123;
+            uint expectedValue = 3;
             ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v1AllTypes);
-            armp.GetMainTable().GetEntry("value").Index = expectedValue;
+            armp.GetMainTable().GetEntry("value").SetIndex(expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry("value").Index, expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry("value").Index);
         }
 
 
@@ -454,12 +454,12 @@ namespace LibARMP.UnitTests
         [TestMethod]
         public void entryIndex_v2ModeColumn()
         {
-            int expectedValue = 123;
+            uint expectedValue = 3;
             ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeColumn);
-            armp.GetMainTable().GetEntry("value").Index = expectedValue;
+            armp.GetMainTable().GetEntry("value").SetIndex(expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry("value").Index, expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry("value").Index);
         }
 
 
@@ -477,13 +477,13 @@ namespace LibARMP.UnitTests
 
 
 
-        ///// V2 MODE ENTRY /////
-        #region v2ModeEntry
+        ///// V2 MODE STRUCTURED /////
+        #region v2ModeStructured
 
         [TestMethod]
-        public void WriteARMP_v2ModeEntry()
+        public void WriteARMP_v2ModeStructured()
         {
-            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeEntry);
+            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeStructured);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
             Assert.AreEqual(armp.Version, armp_new.Version);
@@ -497,11 +497,11 @@ namespace LibARMP.UnitTests
 
 
         [TestMethod]
-        public void u8_v2ModeEntry()
+        public void u8_v2ModeStructured()
         {
             byte expectedValue = 123;
             string columnName = "u8_";
-            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeEntry);
+            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeStructured);
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
@@ -510,11 +510,11 @@ namespace LibARMP.UnitTests
 
 
         [TestMethod]
-        public void u16_v2ModeEntry()
+        public void u16_v2ModeStructured()
         {
             UInt16 expectedValue = 12345;
             string columnName = "u16_";
-            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeEntry);
+            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeStructured);
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
@@ -523,11 +523,11 @@ namespace LibARMP.UnitTests
 
 
         [TestMethod]
-        public void u32_v2ModeEntry()
+        public void u32_v2ModeStructured()
         {
             uint expectedValue = 123456789;
             string columnName = "u32_";
-            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeEntry);
+            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeStructured);
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
@@ -536,11 +536,11 @@ namespace LibARMP.UnitTests
 
 
         [TestMethod]
-        public void u64_v2ModeEntry()
+        public void u64_v2ModeStructured()
         {
             UInt64 expectedValue = 1234567891011121314;
             string columnName = "u64_";
-            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeEntry);
+            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeStructured);
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
@@ -549,11 +549,11 @@ namespace LibARMP.UnitTests
 
 
         [TestMethod]
-        public void s8_v2ModeEntry()
+        public void s8_v2ModeStructured()
         {
             sbyte expectedValue = -123;
             string columnName = "s8_";
-            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeEntry);
+            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeStructured);
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
@@ -562,11 +562,11 @@ namespace LibARMP.UnitTests
 
 
         [TestMethod]
-        public void s16_v2ModeEntry()
+        public void s16_v2ModeStructured()
         {
             short expectedValue = -12345;
             string columnName = "s16_";
-            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeEntry);
+            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeStructured);
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
@@ -575,11 +575,11 @@ namespace LibARMP.UnitTests
 
 
         [TestMethod]
-        public void s32_v2ModeEntry()
+        public void s32_v2ModeStructured()
         {
             int expectedValue = -123456789;
             string columnName = "s32_";
-            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeEntry);
+            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeStructured);
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
@@ -588,11 +588,11 @@ namespace LibARMP.UnitTests
 
 
         [TestMethod]
-        public void s64_v2ModeEntry()
+        public void s64_v2ModeStructured()
         {
             Int64 expectedValue = -1234567891011121314;
             string columnName = "s64_";
-            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeEntry);
+            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeStructured);
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
@@ -601,11 +601,11 @@ namespace LibARMP.UnitTests
 
 
         [TestMethod]
-        public void f32_v2ModeEntry()
+        public void f32_v2ModeStructured()
         {
             float expectedValue = 1.2345f;
             string columnName = "f32_";
-            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeEntry);
+            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeStructured);
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
@@ -614,11 +614,11 @@ namespace LibARMP.UnitTests
 
 
         [TestMethod]
-        public void f64_v2ModeEntry()
+        public void f64_v2ModeStructured()
         {
             double expectedValue = 1.23456789;
             string columnName = "f64_";
-            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeEntry);
+            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeStructured);
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
@@ -627,11 +627,11 @@ namespace LibARMP.UnitTests
 
 
         [TestMethod]
-        public void bool_v2ModeEntry()
+        public void bool_v2ModeStructured()
         {
             bool expectedValue = false;
             string columnName = "bool_";
-            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeEntry);
+            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeStructured);
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
@@ -640,11 +640,11 @@ namespace LibARMP.UnitTests
 
 
         [TestMethod]
-        public void string_v2ModeEntry()
+        public void string_v2ModeStructured()
         {
             string expectedValue = "this is a test string";
             string columnName = "string";
-            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeEntry);
+            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeStructured);
             armp.GetMainTable().GetEntry("value").SetValueFromColumn(columnName, expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
@@ -653,11 +653,11 @@ namespace LibARMP.UnitTests
 
 
         [TestMethod]
-        public void table_v2ModeEntry()
+        public void table_v2ModeStructured()
         {
             byte expectedValue = 123;
             string columnName = "table";
-            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeEntry);
+            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeStructured);
             ArmpTable table = (ArmpTable)armp.GetMainTable().GetEntry("value").GetValueFromColumn(columnName);
             table.GetEntry(1).Name = "new_name";
             table.GetEntry(1).SetValueFromColumn("u8", expectedValue);
@@ -670,9 +670,9 @@ namespace LibARMP.UnitTests
 
 
         [TestMethod]
-        public void entryValidity_v2ModeEntry()
+        public void entryValidity_v2ModeStructured()
         {
-            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeEntry);
+            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeStructured);
             armp.GetMainTable().GetEntry("value").IsValid = false;
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
@@ -681,22 +681,22 @@ namespace LibARMP.UnitTests
 
 
         [TestMethod]
-        public void entryIndex_v2ModeEntry()
+        public void entryIndex_v2ModeStructured()
         {
-            int expectedValue = 123;
-            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeEntry);
-            armp.GetMainTable().GetEntry("value").Index = expectedValue;
+            uint expectedValue = 3;
+            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeStructured);
+            armp.GetMainTable().GetEntry("value").SetIndex(expectedValue);
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
-            Assert.AreEqual(armp_new.GetMainTable().GetEntry("value").Index, expectedValue);
+            Assert.AreEqual(expectedValue, armp_new.GetMainTable().GetEntry("value").Index);
         }
 
 
         [TestMethod]
-        public void entryName_v2ModeEntry()
+        public void entryName_v2ModeStructured()
         {
             string expectedValue = "test_name";
-            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeEntry);
+            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeStructured);
             armp.GetMainTable().GetEntry("value").Name = expectedValue;
             Stream stream = ArmpFileWriter.WriteARMPToStream(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(stream);
