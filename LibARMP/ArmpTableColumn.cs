@@ -137,7 +137,7 @@ namespace LibARMP
         /// If any other <see cref="ArmpTableColumn"/> is already making use of the provided index, it will be updated with this <see cref="ArmpTableColumn"/>'s previous index.
         /// </summary>
         /// <param name="index">The new index.</param>
-        /// <exception cref="ColumnNoIndexException">The does not have column indices.</exception>
+        /// <exception cref="ColumnNoIndexException">The table does not have column indices.</exception>
         /// <exception cref="IndexOutOfRangeException">The index value is out of range.</exception>
         public void SetIndex(uint index)
         {
@@ -147,22 +147,14 @@ namespace LibARMP
             if (index >= ParentTable.Columns.Count)
                 throw new IndexOutOfRangeException($"The value of 'index' ({index}) cannot be equal or greater than the total amount of columns in the table ({ParentTable.Columns.Count}).");
 
-            int columnID = (int)ID;
+            if (Index == index) return;
             Index = index;
-            uint oldIndex = ParentTable.OrderedColumnIDs[columnID];
 
-            // Swap the index value for any column already using it
-            for (int i = 0; i < ParentTable.Columns.Count; i++)
-            {
-                if (ParentTable.OrderedColumnIDs[i] == index)
-                {
-                    ParentTable.OrderedColumnIDs[i] = oldIndex;
-                    ParentTable.Columns[i].Index = oldIndex;
-                    break;
-                }
-            }
-
-            ParentTable.OrderedColumnIDs[columnID] = index;
+            // Swap the index value with the column already using it
+            int oldIndex = ParentTable.OrderedColumnIDs.IndexOf(ID);
+            uint originalColumnIDAtNewIndex = ParentTable.OrderedColumnIDs[(int)index];
+            ParentTable.OrderedColumnIDs[oldIndex] = originalColumnIDAtNewIndex;
+            ParentTable.OrderedColumnIDs[(int)index] = ID;
         }
 
 
@@ -178,22 +170,14 @@ namespace LibARMP
             if (!ParentTable.TableInfo.HasOrderedColumns) return false;
             if (index >= ParentTable.Columns.Count) return false;
 
-            int columnID = (int)ID;
+            if (Index == index) return true;
             Index = index;
-            uint oldIndex = ParentTable.OrderedColumnIDs[columnID];
 
-            // Swap the index value for any column already using it
-            for (int i = 0; i < ParentTable.Columns.Count; i++)
-            {
-                if (ParentTable.OrderedColumnIDs[i] == index)
-                {
-                    ParentTable.OrderedColumnIDs[i] = oldIndex;
-                    ParentTable.Columns[i].Index = oldIndex;
-                    break;
-                }
-            }
-
-            ParentTable.OrderedColumnIDs[columnID] = index;
+            // Swap the index value with the column already using it
+            int oldIndex = ParentTable.OrderedColumnIDs.IndexOf(ID);
+            uint originalColumnIDAtNewIndex = ParentTable.OrderedColumnIDs[(int)index];
+            ParentTable.OrderedColumnIDs[oldIndex] = originalColumnIDAtNewIndex;
+            ParentTable.OrderedColumnIDs[(int)index] = ID;
             return true;
         }
     }

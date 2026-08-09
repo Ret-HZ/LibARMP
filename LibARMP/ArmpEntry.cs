@@ -146,22 +146,14 @@ namespace LibARMP
             if (index >= ParentTable.Entries.Count)
                 throw new IndexOutOfRangeException($"The value of 'index' ({index}) cannot be equal or greater than the total amount of entries in the table ({ParentTable.Entries.Count}).");
 
-            int entryID = (int)ID;
+            if (Index == index) return;
             Index = index;
-            uint oldIndex = ParentTable.OrderedEntryIDs[entryID];
-            
-            // Swap the index value for any entry already using it
-            for (int i = 0; i < ParentTable.Entries.Count; i++)
-            {
-                if (ParentTable.OrderedEntryIDs[i] == index)
-                {
-                    ParentTable.OrderedEntryIDs[i] = oldIndex;
-                    ParentTable.Entries[i].Index = oldIndex;
-                    break;
-                }
-            }
 
-            ParentTable.OrderedEntryIDs[entryID] = index;
+            // Swap the index value with the entry already using it
+            int oldIndex = ParentTable.OrderedEntryIDs.IndexOf(ID);
+            uint originalEntryIDAtNewIndex = ParentTable.OrderedEntryIDs[(int)index];
+            ParentTable.OrderedEntryIDs[oldIndex] = originalEntryIDAtNewIndex;
+            ParentTable.OrderedEntryIDs[(int)index] = ID;
         }
 
 
@@ -177,22 +169,14 @@ namespace LibARMP
             if (!ParentTable.TableInfo.HasOrderedEntries) return false;
             if (index >= ParentTable.Entries.Count) return false;
 
-            int entryID = (int)ID;
+            if (Index == index) return true;
             Index = index;
-            uint oldIndex = ParentTable.OrderedEntryIDs[entryID];
 
-            // Swap the index value for any entry already using it
-            for (int i = 0; i < ParentTable.Entries.Count; i++)
-            {
-                if (ParentTable.OrderedEntryIDs[i] == index)
-                {
-                    ParentTable.OrderedEntryIDs[i] = oldIndex;
-                    ParentTable.Entries[i].Index = oldIndex;
-                    break;
-                }
-            }
-
-            ParentTable.OrderedEntryIDs[entryID] = index;
+            // Swap the index value with the entry already using it
+            int oldIndex = ParentTable.OrderedEntryIDs.IndexOf(ID);
+            uint originalEntryIDAtNewIndex = ParentTable.OrderedEntryIDs[(int)index];
+            ParentTable.OrderedEntryIDs[oldIndex] = originalEntryIDAtNewIndex;
+            ParentTable.OrderedEntryIDs[(int)index] = ID;
             return true;
         }
 
