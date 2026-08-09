@@ -585,11 +585,11 @@ namespace LibARMP.UnitTests
             bool result = armp.GetMainTable().DeleteColumn(column);
             //Before saving
             Assert.IsTrue(result);
-            Assert.ThrowsException<ColumnNotFoundException>(() => armp.GetMainTable().GetColumn(column));
+            Assert.Throws<ColumnNotFoundException>(() => armp.GetMainTable().GetColumn(column));
             //After saving
             byte[] temp = ArmpFileWriter.WriteARMPToArray(armp);
             ARMP armp_new = ArmpFileReader.ReadARMP(temp);
-            Assert.ThrowsException<ColumnNotFoundException>(() => armp_new.GetMainTable().GetColumn(column));
+            Assert.Throws<ColumnNotFoundException>(() => armp_new.GetMainTable().GetColumn(column));
         }
 
 
