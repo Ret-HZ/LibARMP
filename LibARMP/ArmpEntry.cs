@@ -343,6 +343,57 @@ namespace LibARMP
 
 
         /// <summary>
+        /// Attempts to get the value for the specified column.
+        /// </summary>
+        /// <param name="column">The <see cref="ArmpTableColumn"/>.</param>
+        /// <param name="value">When this method returns, contains the value associated with the specified column, if a value is found;
+        /// otherwise, the default value for the type of the value parameter. This parameter is passed uninitialized.</param>
+        /// <returns><see langword="true"/> if the operation was successful, otherwise <see langword="false"/>.</returns>
+        public bool TryGetValueFromColumn<T>(ArmpTableColumn column, out T value)
+        {
+            object valueTemp;
+            if (Data.ContainsKey(column.Name))
+            {
+                valueTemp = Data[column.Name];
+                // Convert to column type if the data is stored as member type for v2 structured
+                if (ParentTable.TableInfo.FormatVersion == Version.DragonEngineV2 && ParentTable.TableInfo.HasMemberInfo)
+                {
+                    if (column.Type.CSType != column.MemberInfo.Type.CSType)
+                    {
+                        valueTemp = Convert.ChangeType(valueTemp, column.Type.CSType);
+                    }
+                }
+            }
+            else // Column doesn't exist or has no data
+            {
+                value = default;
+                return false;
+            }
+
+            try
+            {
+                // Attempt direct cast first
+                if (valueTemp is T t)
+                {
+                    value = t;
+                    return true;
+                }
+
+                // If direct cast is not possible, try ChangeType instead
+                Type targetType = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
+                object converted = Convert.ChangeType(valueTemp, targetType);
+                value = (T)converted;
+                return true;
+            }
+            catch
+            {
+                value = default(T);
+                return false;
+            }
+        }
+
+
+        /// <summary>
         /// Gets the value for the specified column.
         /// </summary>
         /// <param name="columnName">The column name.</param>
@@ -355,6 +406,28 @@ namespace LibARMP
 
 
         /// <summary>
+        /// Attempts to get the value for the specified column.
+        /// </summary>
+        /// <param name="columnName">The column name.</param>
+        /// <param name="value">When this method returns, contains the value associated with the specified column, if a value is found;
+        /// otherwise, the default value for the type of the value parameter. This parameter is passed uninitialized.</param>
+        /// <returns><see langword="true"/> if the operation was successful, otherwise <see langword="false"/>.</returns>
+        public bool TryGetValueFromColumn<T>(string columnName, out T value)
+        {
+            ArmpTableColumn column;
+            if (ParentTable.TryGetColumn(columnName, out column))
+            {
+                return TryGetValueFromColumn<T>(column, out value);
+            }
+            else
+            {
+                value = default(T);
+                return false;
+            }
+        }
+
+
+        /// <summary>
         /// Gets the value for the specified column.
         /// </summary>
         /// <param name="columnID">The column index.</param>
@@ -363,6 +436,28 @@ namespace LibARMP
         {
             ArmpTableColumn column = ParentTable.GetColumn(columnID);
             return GetValueFromColumn<T>(column);
+        }
+
+
+        /// <summary>
+        /// Attempts to get the value for the specified column.
+        /// </summary>
+        /// <param name="columnID">The column index.</param>
+        /// <param name="value">When this method returns, contains the value associated with the specified column, if a value is found;
+        /// otherwise, the default value for the type of the value parameter. This parameter is passed uninitialized.</param>
+        /// <returns><see langword="true"/> if the operation was successful, otherwise <see langword="false"/>.</returns>
+        public bool TryGetValueFromColumn<T>(uint columnID, out T value)
+        {
+            ArmpTableColumn column;
+            if (ParentTable.TryGetColumn(columnID, out column))
+            {
+                return TryGetValueFromColumn<T>(column, out value);
+            }
+            else
+            {
+                value = default(T);
+                return false;
+            }
         }
 
 

@@ -124,6 +124,40 @@ namespace LibARMP.UnitTests
 
 
         [TestMethod]
+        public void ArmpEntry_TryGetValueFromColumn()
+        {
+            ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeStructured);
+            ArmpEntry entry = armp.GetMainTable().GetEntry("value");
+            ArmpTableColumn column = armp.GetMainTable().GetColumn("u16_");
+            ushort value1, value2, value3;
+            entry.TryGetValueFromColumn("u16_", out value1);
+            entry.TryGetValueFromColumn(2, out value2);
+            entry.TryGetValueFromColumn(column, out value3);
+
+            Assert.AreEqual((UInt16)800, value1);
+            Assert.AreEqual((UInt16)800, value2);
+            Assert.AreEqual((UInt16)800, value3);
+
+            ArmpTable table;
+            byte value_u8;
+            entry.TryGetValueFromColumn("table", out table);
+            Assert.AreEqual("value", table.GetEntry(2).Name);
+            table.GetEntry(2).TryGetValueFromColumn("u8", out value_u8);
+            Assert.AreEqual((byte)64, value_u8);
+
+            int value_s32;
+            bool result_nonexistentColumn = entry.TryGetValueFromColumn("does_not_exist", out value_s32);
+            Assert.IsFalse(result_nonexistentColumn);
+            Assert.AreEqual((int)0, value_s32);
+
+            long value_s64;
+            bool result_invalidValueType = entry.TryGetValueFromColumn("string", out value_s64);
+            Assert.IsFalse(result_invalidValueType);
+            Assert.AreEqual((long)0, value_s64);
+        }
+
+
+        [TestMethod]
         public void ArmpEntry_SetValueFromColumn()
         {
             ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeColumn);
