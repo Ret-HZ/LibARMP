@@ -848,9 +848,13 @@ namespace LibARMP.IO
                         {
                             ArmpTable tableValue;
                             uint tablePtr;
-                            if (entry.TryGetValueFromColumn(column, out tableValue) && tableValuePointers.TryGetValue(tableValue, out tablePtr))
+                            if (entry.TryGetValueFromColumn(column, out tableValue) && (tableValue != null) && tableValuePointers.TryGetValue(tableValue, out tablePtr))
                             {
                                 writer.Write((ulong)tablePtr);
+                            }
+                            else
+                            {
+                                writer.Write(0L);
                             }
                         }
 
