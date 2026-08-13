@@ -315,5 +315,69 @@ namespace LibARMP
         /// </summary>
         /// <remarks><para>Only used if Flag 7 is set.</para></remarks>
         internal long BaseARMPMemoryAddress { get; set; }
+
+
+
+        /// <summary>
+        /// Creates a copy of this <see cref="ArmpTableInfo"/>.
+        /// </summary>
+        /// <returns>A copy of this <see cref="ArmpTableInfo"/>.</returns>
+        internal ArmpTableInfo Copy()
+        {
+            ArmpTableInfo infoCopy = new ArmpTableInfo();
+
+            //General Info
+            infoCopy.EntryCount = EntryCount;
+            infoCopy.ColumnCount = ColumnCount;
+            infoCopy.TextCount = TextCount;
+            infoCopy.DefaultEntryID = DefaultEntryID;
+            infoCopy.DefaultColumnID = DefaultColumnID;
+            infoCopy.TableID = TableID;
+            infoCopy.StorageMode = StorageMode;
+
+            //Pointers
+            infoCopy.ptrEntryNamesOffsetTable = ptrEntryNamesOffsetTable;
+            infoCopy.ptrEntryValidity = ptrEntryValidity;
+            infoCopy.ptrColumnDataTypes = ptrColumnDataTypes;
+            infoCopy.ptrColumnContentOffsetTable = ptrColumnContentOffsetTable;
+            infoCopy.ptrTextOffsetTable = ptrTextOffsetTable;
+            infoCopy.ptrColumnNamesOffsetTable = ptrColumnNamesOffsetTable;
+            infoCopy.ptrEntryOrder = ptrEntryOrder;
+            infoCopy.ptrColumnOrder = ptrColumnOrder;
+            infoCopy.ptrColumnValidity = ptrColumnValidity;
+            infoCopy.ptrIndexerTable = ptrIndexerTable;
+            infoCopy.ptrColumnMetadata = ptrColumnMetadata;
+            infoCopy.ptrGameVarColumnIDs = ptrGameVarColumnIDs;
+            infoCopy.ptrBlankCellFlagOffsetTable = ptrBlankCellFlagOffsetTable;
+            infoCopy.ptrMemberInfo = ptrMemberInfo;
+            infoCopy.ptrExtraFieldInfo = ptrExtraFieldInfo;
+
+            //Flags
+            infoCopy.HasText = HasText;
+            infoCopy.HasIndexerTable = HasIndexerTable;
+            infoCopy.HasEntryNames = HasEntryNames;
+            infoCopy.HasColumnNames = HasColumnNames;
+            infoCopy.HasMemberInfo = HasMemberInfo;
+            infoCopy.HasEntryValidity = HasEntryValidity;
+            infoCopy.HasOrderedEntries = HasOrderedEntries;
+            infoCopy.HasOrderedColumns = HasOrderedColumns;
+            infoCopy.HasExtraFieldInfo = HasExtraFieldInfo;
+            infoCopy.HasBlankCellFlags = HasBlankCellFlags;
+            infoCopy.HasColumnMetadata = HasColumnMetadata;
+            infoCopy.HasGameVarColumns = HasGameVarColumns;
+            infoCopy.UnknownFlag1 = UnknownFlag1;
+            infoCopy.UnknownFlag2 = UnknownFlag2;
+            infoCopy.UnknownFlag3 = UnknownFlag3;
+            infoCopy.UnknownFlag4 = UnknownFlag4;
+            infoCopy.DoNotUseRaw = DoNotUseRaw;
+            infoCopy.MembersWellFormatted = MembersWellFormatted;
+            infoCopy.IsProcessedForMemory = IsProcessedForMemory;
+
+            //Extra data
+            infoCopy.FormatVersion = FormatVersion;
+            infoCopy.BaseARMPMemoryAddress = BaseARMPMemoryAddress;
+
+            return infoCopy;
+        }
     }
 }

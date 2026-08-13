@@ -93,7 +93,7 @@ namespace LibARMP
         public ArmpTableBase Copy (bool copyEntries = true)
         {
             ArmpTableBase copy = new ArmpTableBase(copyEntries ? Entries.Count : 0, Columns.Count);
-            copy.TableInfo = Util.DeepCopy(TableInfo);
+            copy.TableInfo = TableInfo.Copy();
 
             // If the table has member info, initiate an ordered copy of the structure specification.
             ArmpMemberInfo[] copySpecOrdered = null;
