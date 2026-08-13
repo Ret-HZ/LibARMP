@@ -350,7 +350,7 @@ namespace LibARMP.IO
         /// <returns>The pointer to the table.</returns>
         private static uint WriteTableRecursive(BinaryWriter writer, ArmpTableBase table)
         {
-            List<string> tableColumns = table.GetColumnNamesByType<ArmpTable>(ordered: true);
+            List<ArmpTableColumn> tableColumns = table.GetColumnsByType<ArmpTable>(ordered: true);
             Dictionary<ArmpTableBase, uint> tablePointers = new Dictionary<ArmpTableBase, uint>();
 
             if (tableColumns.Count > 0)
@@ -364,17 +364,13 @@ namespace LibARMP.IO
                     else
                         entry = entries[(int)table.OrderedEntryIDs[i]];
 
-                    foreach (string column in tableColumns)
+                    foreach (ArmpTableColumn column in tableColumns)
                     {
-                        try
+                        ArmpTableBase tableValue;
+                        if (entry.TryGetValueFromColumn(column, out tableValue) && tableValue != null)
                         {
-                            ArmpTableBase tableValue = (ArmpTableBase)entry.GetValueFromColumn(column);
-                            if (tableValue == null) continue;
                             uint tableValuePtr = WriteTableRecursive(writer, tableValue);
                             tablePointers.Add(tableValue, tableValuePtr);
-                        }
-                        catch
-                        {
                         }
                     }
                 }
@@ -850,14 +846,11 @@ namespace LibARMP.IO
 
                         else if (memberInfo.Type.CSType == typeof(ArmpTable))
                         {
-                            try
+                            ArmpTable tableValue;
+                            uint tablePtr;
+                            if (entry.TryGetValueFromColumn(column, out tableValue) && tableValuePointers.TryGetValue(tableValue, out tablePtr))
                             {
-                                ulong tablePtr = tableValuePointers[(ArmpTable)entry.GetValueFromColumn(column.Name)];
-                                writer.Write(tablePtr);
-                            }
-                            catch
-                            {
-                                writer.Write(0L);
+                                writer.Write((ulong)tablePtr);
                             }
                         }
 
