@@ -235,6 +235,35 @@ namespace LibARMP.UnitTests
 
 
         [TestMethod]
+        public void ArmpTableColumn_SetDataType()
+        {
+            ARMP armp_v1 = ArmpFileReader.ReadARMP(TestFiles.v1AllTypes);
+            ARMP armp_v2Column = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeColumn);
+            ARMP armp_v2Structured = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeStructured);
+
+            armp_v1.GetMainTable().GetColumn("u8").SetDataType(typeof(string));
+            armp_v2Column.GetMainTable().GetColumn("bool_").SetDataType(typeof(long));
+            armp_v2Structured.GetMainTable().GetColumn("u32_").SetDataType(typeof(bool));
+
+            armp_v1.GetMainTable().GetEntry(1).SetValueFromColumn("u8", "test");
+            armp_v2Column.GetMainTable().GetEntry(1).SetValueFromColumn("bool_", 123456789101112);
+            armp_v2Structured.GetMainTable().GetEntry(1).SetValueFromColumn("u32_", true);
+
+            armp_v1 = ArmpFileReader.ReadARMP(ArmpFileWriter.WriteARMPToArray(armp_v1));
+            armp_v2Column = ArmpFileReader.ReadARMP(ArmpFileWriter.WriteARMPToArray(armp_v2Column));
+            armp_v2Structured = ArmpFileReader.ReadARMP(ArmpFileWriter.WriteARMPToArray(armp_v2Structured));
+
+            Assert.AreEqual(typeof(string), armp_v1.GetMainTable().GetColumn("u8").GetDataType());
+            Assert.AreEqual(typeof(long), armp_v2Column.GetMainTable().GetColumn("bool_").GetDataType());
+            Assert.AreEqual(typeof(bool), armp_v2Structured.GetMainTable().GetColumn("u32_").GetDataType());
+
+            Assert.AreEqual("test", armp_v1.GetMainTable().GetEntry(1).GetValueFromColumn("u8"));
+            Assert.AreEqual(123456789101112, armp_v2Column.GetMainTable().GetEntry(1).GetValueFromColumn("bool_"));
+            Assert.AreEqual(true, armp_v2Structured.GetMainTable().GetEntry(1).GetValueFromColumn("u32_"));
+        }
+
+
+        [TestMethod]
         public void ArmpTableColumn_Copy()
         {
             ARMP armp = ArmpFileReader.ReadARMP(TestFiles.v2AllTypesModeColumn);

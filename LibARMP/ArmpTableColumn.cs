@@ -114,6 +114,57 @@ namespace LibARMP
 
 
         /// <summary>
+        /// Sets the column's data type.
+        /// </summary>
+        /// <remarks>All existing entry values for this column will be converted if possible.
+        /// Otherwise, they will be reset to their default value for the chosen type.</remarks>
+        /// <param name="csType">The C# type to set.</param>
+        /// <exception cref="TypeNotSupportedException">The provided C# type is not supported by the armp format.</exception>
+        public void SetDataType(Type csType)
+        {
+            ArmpType newArmpType = DataTypes.GetArmpTypeByCSType(csType);
+            if (newArmpType == Type) return; // Same type, no changes needed
+
+            ArmpType oldType = Type;
+            ArmpType targetType = newArmpType; // Target type for value conversions
+
+            // Booleans in StorageMode.Structured are stored as uint8
+            if (newArmpType.CSType == typeof(bool) && ParentTable.TableInfo.FormatVersion == Version.DragonEngineV2 
+                && ParentTable.TableInfo.HasMemberInfo && ParentTable.TableInfo.StorageMode == StorageMode.Structured)
+            {
+                targetType = DataTypes.GetArmpTypeByCSType(typeof(byte));
+            }
+
+            // Convert existing values to the new type
+            foreach (ArmpEntry entry in ParentTable.Entries)
+            {
+                object value;
+                if (entry.TryGetValueFromColumn(this, out value))
+                {
+                    try
+                    {
+                        value = Convert.ChangeType(value, targetType.CSType);
+                    }
+                    catch
+                    {
+                        value = targetType.DefaultValue;
+                    }
+                }
+                entry.Data[Name] = value;
+            }
+
+            // Set the new type
+            if (ParentTable.TableInfo.FormatVersion == Version.DragonEngineV2 && ParentTable.TableInfo.HasMemberInfo)
+            {
+                MemberInfo.Type = targetType;
+                ParentTable.StructurePacked = false;
+            }
+
+            Type = newArmpType;
+        }
+
+
+        /// <summary>
         /// Creates a copy of this column.
         /// </summary>
         /// <returns>A copy of this <see cref="ArmpTableColumn"/>.</returns>
